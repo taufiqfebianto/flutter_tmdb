@@ -13,20 +13,20 @@ class AuthenticationBloc
     on<AuthenticationEvent>((event, emit) {});
     on<AppStarted>(
       (event, emit) async {
-        String sessionId = await storage.getString(
-            boxName: describeEnum(StorageConstants.user), key: 'sessionId');
-        if (sessionId == '') {
-          emit(const AuthenticationUnauthenticated());
-        } else {
+        // String sessionId = await storage.getString(
+        //     boxName: describeEnum(StorageConstants.user), key: 'sessionId');
+        // if (sessionId == '') {
+        //   emit(const AuthenticationUnauthenticated());
+        // } else {
           emit(const AuthenticationAuthenticated());
-        }
+        // }
       },
     );
     on<LoggedIn>((event, emit) async {
       emit(const AuthenticationAuthenticated());
     });
     on<LoggedOut>((event, emit) async {
-      emit(const AuthenticationUnauthenticated());
+      emit(const AuthenticationAuthenticated());
     });
   }
 }

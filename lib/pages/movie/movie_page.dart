@@ -1,39 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:flutter_tmdb/shared/shared.dart';
+import 'package:flutter_tmdb/styles/colors.dart';
 
-import 'bloc/home_bloc.dart';
+import 'bloc/movie.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MoviePage extends StatefulWidget {
+  const MoviePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MoviePage> createState() => _MoviePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeBloc, HomeState>(
+    return BlocConsumer<MovieBloc, MovieState>(
       listener: ((context, state) {}),
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: colorStyle.black(),
           body: Padding(
             padding: const EdgeInsets.all(25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Image.asset(
-                  Constants.logo,
-                ),
-              ],
+              children: const [Text('Movie Page')],
             ),
           ),
         );

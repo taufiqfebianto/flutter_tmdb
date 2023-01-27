@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../pages/home/home_page.dart';
+import '../pages/home/bloc/home.dart';
+import '../pages/hometab/bloc/hometab.dart';
+import '../pages/movie/bloc/movie.dart';
+import '../pages/series/bloc/series.dart';
+import '../pages/splash_page.dart';
 import 'bloc/authentication_bloc.dart';
 
 class Routers {
@@ -15,17 +19,23 @@ class Routers {
             if (state is AuthenticationAuthenticated) {
               return MultiBlocProvider(
                 providers: [
-                  // BlocProvider<StoryBloc>(
-                  //   create: (BuildContext context) => StoryBloc(),
-                  // ),
-                  // BlocProvider<AddStoryBloc>(
-                  //   create: (BuildContext context) => AddStoryBloc(),
-                  // ),
+                  BlocProvider<HometabBloc>(
+                    create: (BuildContext context) => HometabBloc(),
+                  ),
+                  BlocProvider<HomeBloc>(
+                    create: (BuildContext context) => HomeBloc(),
+                  ),
+                  BlocProvider<MovieBloc>(
+                    create: (BuildContext context) => MovieBloc(),
+                  ),
+                  BlocProvider<SeriesBloc>(
+                    create: (BuildContext context) => SeriesBloc(),
+                  ),
                   // BlocProvider<DetailStoryBloc>(
                   //   create: (BuildContext context) => DetailStoryBloc(),
                   // ),
                 ],
-                child: const HomePage(),
+                child: const HomeTabPage(),
               );
             }
 
@@ -33,8 +43,8 @@ class Routers {
               return const CircularProgressIndicator.adaptive();
             }
 
-            // return const SplashPage();
-            return const CircularProgressIndicator.adaptive();
+            return const SplashPage();
+            // return const CircularProgressIndicator.adaptive();
           });
     },
     // Routers.register: (BuildContext context) {
