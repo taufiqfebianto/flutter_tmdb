@@ -1,8 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-
-import '../shared.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/home/bloc/home.dart';
 import '../pages/hometab/bloc/hometab.dart';
+import '../pages/more/bloc/more.dart';
 import '../pages/movie/bloc/movie.dart';
 import '../pages/series/bloc/series.dart';
 import '../pages/splash_page.dart';
@@ -10,6 +11,7 @@ import 'bloc/authentication_bloc.dart';
 
 class Routers {
   static const String home = '/home';
+  static const String more = '/more';
 
   final route = <String, WidgetBuilder>{
     Routers.home: (BuildContext context) {
@@ -47,11 +49,11 @@ class Routers {
             // return const CircularProgressIndicator.adaptive();
           });
     },
-    // Routers.register: (BuildContext context) {
-    //   return BlocProvider<RegisterBloc>(
-    //     create: (BuildContext context) => RegisterBloc(),
-    //     child: const RegisterPage(),
-    //   );
-    // },
+    Routers.more: (BuildContext context) {
+      return BlocProvider<MoreBloc>(
+        create: (BuildContext context) => MoreBloc(),
+        child: const MorePage(),
+      );
+    },
   };
 }

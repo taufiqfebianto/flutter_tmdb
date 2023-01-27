@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tmdb/pages/home/home_page.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
 
@@ -17,18 +16,18 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class _HomeTabPageState extends State<HomeTabPage> {
-  int _selectedTab = 1;
+  int _selectedTab = 0;
 
   Widget _activeTab(HometabState state, BuildContext context) {
-    if (state == HometabState.movie) {
-      return const MoviePage();
+    if (state == HometabState.tmdb) {
+      return const HomePage();
     }
 
     if (state == HometabState.series) {
       return const SeriesPage();
     }
 
-    return const HomePage();
+    return const MoviePage();
   }
 
   @override

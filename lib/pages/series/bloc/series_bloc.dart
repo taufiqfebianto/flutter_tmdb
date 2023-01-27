@@ -7,7 +7,7 @@ part 'series_state.dart';
 class SeriesBloc extends Bloc<SeriesEvent, SeriesState> {
   SeriesBloc() : super(SeriesInitial()) {
     on<SeriesEvent>((event, emit) {
-      // TODO: implement event handler
+      
     });
   }
 }
