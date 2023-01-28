@@ -36,25 +36,20 @@ class _MoviePageState extends State<MoviePage> {
     super.dispose();
   }
 
-  _nowPlayingMovie() async {
-    bloc!.add(GetNowPlayingMovieEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MovieBloc, MovieState>(
       listener: ((context, state) {
-        if (state is GetLatestMovieSuccessState) {}
         if (state is GetPopularMovieSuccessState) {
           popularModel = state.model;
           bloc!.add(GetNowPlayingMovieEvent());
-          // _nowPlayingMovie();
         }
-        if (state is GetUpcomingMovieSuccessState) {}
-        if (state is GetTopratedMovieSuccessState) {}
         if (state is GetNowPlayingMovieSuccessState) {
           nowPlayingModel = state.model;
         }
+        if (state is GetLatestMovieSuccessState) {}
+        if (state is GetUpcomingMovieSuccessState) {}
+        if (state is GetTopratedMovieSuccessState) {}
       }),
       builder: (context, state) {
         return Scaffold(

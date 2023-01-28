@@ -9,6 +9,7 @@ class MovieRepo {
     try {
       final Map<String, dynamic> parameters = {
         'api_key': Constants.apiKey,
+        'page': 2
       };
 
       Map<String, dynamic> response = await network.getHttp(
@@ -27,6 +28,7 @@ class MovieRepo {
     try {
       final Map<String, dynamic> parameters = {
         'api_key': Constants.apiKey,
+        'page': 1
       };
 
       Map<String, dynamic> response = await network.getHttp(

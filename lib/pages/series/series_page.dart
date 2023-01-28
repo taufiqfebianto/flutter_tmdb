@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:flutter_tmdb/models/on_air_series_response_model.dart';
+import 'package:flutter_tmdb/models/popular_series_response_model.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
 
+import '../../shared/shared.dart';
 import '../../widgets/widgets.dart';
 import 'bloc/series.dart';
 
@@ -14,23 +17,36 @@ class SeriesPage extends StatefulWidget {
 }
 
 class _SeriesPageState extends State<SeriesPage> {
+  SeriesBloc? bloc;
+  late OnAirSeriesResponseModel onAirModel = OnAirSeriesResponseModel();
+  late PopularSeriesResponseModel popularModel = PopularSeriesResponseModel();
+
+  SwiperController? swiperController;
 
   @override
   void initState() {
-    
     super.initState();
+    bloc = BlocProvider.of<SeriesBloc>(context);
+    bloc!.add(GetOnAirSeriesEvent());
   }
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SeriesBloc, SeriesState>(
-      listener: ((context, state) {}),
+      listener: ((context, state) {
+        if (state is GetOnAirSeriesSuccessState) {
+          onAirModel = state.model;
+          bloc!.add(GetPopularSeriesEvent());
+        }
+        if (state is GetPopularSeriesSuccessState) {
+          popularModel = state.model;
+        }
+      }),
       builder: (context, state) {
         return Scaffold(
           backgroundColor: colorStyle.black(),
@@ -41,24 +57,69 @@ class _SeriesPageState extends State<SeriesPage> {
                 SizedBox(
                   height: 200,
                   child: Swiper(
+                    controller: swiperController,
                     itemBuilder: (BuildContext context, int index) {
                       return Image.network(
-                        'https://4.bp.blogspot.com/-CJzAMtILkLA/XEQrxmj6p6I/AAAAAAAAMbo/VaLGgEeDy5YAAyKOO2UBbjPbwN2A6iNhACLcBGAs/s640/1_jfR0trcAPT3udktrFkOebA.jpg',
+                        '${Constants.baseImagePath}${popularModel.results?[index].backdropPath}',
                         fit: BoxFit.fill,
                       );
                     },
-                    itemCount: 8,
+                    itemCount: 6,
                     autoplay: true,
                   ),
                 ),
-                titleButton(onTap: () {},title: 'Latest'),
-                listMovie(),
-                titleButton(onTap: () {},title: 'Now Playing'),
-                listMovie(),
-                titleButton(onTap: () {},title: 'Popular'),
-                listMovie(),
-                titleButton(onTap: () {},title: 'Top Rated'),
-                listMovie()
+                titleButton(onTap: () {}, title: 'On The Air'),
+                SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    reverse: true,
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: onAirModel.results?.length,
+                    itemBuilder: ((context, int index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.network(
+                                '${Constants.baseImagePath}${onAirModel.results?[index].posterPath}',
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                titleButton(onTap: () {}, title: 'Popular'),
+                SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    reverse: true,
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: popularModel.results?.length,
+                    itemBuilder: ((context, int index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.network(
+                                '${Constants.baseImagePath}${popularModel.results?[index].posterPath}',
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
               ],
             ),
           ),
