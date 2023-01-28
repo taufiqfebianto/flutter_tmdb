@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tmdb/models/models.dart';
-import 'package:flutter_tmdb/models/request_token_response_model.dart';
 import 'package:flutter_tmdb/repository/user_repo.dart';
 
 import '../shared.dart';
@@ -38,7 +37,7 @@ class AuthenticationBloc
     on<ValidateTokenEvent>((event, emit) async {
       try {
         await userRepo.validateToken();
-        emit(ValidateTokenSuccessState());
+        emit(const ValidateTokenSuccessState());
       } catch (e) {
         // ignore: use_rethrow_when_possible
         throw e;

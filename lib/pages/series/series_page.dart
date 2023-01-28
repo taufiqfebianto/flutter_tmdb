@@ -14,6 +14,19 @@ class SeriesPage extends StatefulWidget {
 }
 
 class _SeriesPageState extends State<SeriesPage> {
+
+  @override
+  void initState() {
+    
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SeriesBloc, SeriesState>(
@@ -38,13 +51,13 @@ class _SeriesPageState extends State<SeriesPage> {
                     autoplay: true,
                   ),
                 ),
-                titleButton(onTap: () {},title: 'Continue Watching'),
+                titleButton(onTap: () {},title: 'Latest'),
                 listMovie(),
-                titleButton(onTap: () {},title: 'Commedy'),
+                titleButton(onTap: () {},title: 'Now Playing'),
                 listMovie(),
-                titleButton(onTap: () {},title: 'Action'),
+                titleButton(onTap: () {},title: 'Popular'),
                 listMovie(),
-                titleButton(onTap: () {},title: 'Thriller'),
+                titleButton(onTap: () {},title: 'Top Rated'),
                 listMovie()
               ],
             ),

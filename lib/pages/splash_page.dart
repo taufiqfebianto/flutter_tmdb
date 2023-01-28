@@ -15,7 +15,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   AuthenticationBloc? bloc;
-  String status = 'App status progress';
+  String status = 'Loading.....';
   // String? token;
   @override
   void initState() {

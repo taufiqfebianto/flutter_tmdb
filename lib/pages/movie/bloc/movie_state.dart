@@ -20,12 +20,15 @@ class GetLatestMovieSuccessState extends MovieState {
 }
 
 class GetPopularMovieSuccessState extends MovieState {
+  final PopularMovieResponseModel model;
+
+  const GetPopularMovieSuccessState(this.model);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [model];
 
   @override
   String toString() {
-    return 'GetPopularMovieState : ';
+    return 'GetPopularMovieState : ${model.toJson()}';
   }
 }
 
@@ -49,13 +52,15 @@ class GetTopratedMovieSuccessState extends MovieState {
   }
 }
 
-class GetNowPlayingdMovieSuccessState extends MovieState {
+class GetNowPlayingMovieSuccessState extends MovieState {
+  final NowPlayingMovieResponseModel model;
+  const GetNowPlayingMovieSuccessState(this.model);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [model];
 
   @override
   String toString() {
-    return 'GetNowPlayingdMovieState : ';
+    return 'GetNowPlayingdMovieState : ${model.toJson()}';
   }
 }
 

@@ -47,7 +47,7 @@ class GetTopratedMovieEvent extends MovieEvent {
   }
 }
 
-class GetNowPlayingdMovieEvent extends MovieEvent {
+class GetNowPlayingMovieEvent extends MovieEvent {
   @override
   List<Object> get props => [];
 
