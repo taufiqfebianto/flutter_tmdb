@@ -42,6 +42,7 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.0.12
   pretty_dio_logger: ^1.1.1
+  url_launcher: ^6.1.8
 
 dev_dependencies:
   flutter_lints: ^2.0.0

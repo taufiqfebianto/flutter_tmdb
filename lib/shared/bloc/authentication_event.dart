@@ -12,12 +12,43 @@ class AppStarted extends AuthenticationEvent {
   String toString() => 'AppStarted';
 }
 
+class GetTokenEvent extends AuthenticationEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'GetTokenEvent';
+}
+
+class ValidateTokenEvent extends AuthenticationEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'ValidateTokenEvent';
+}
+
+class GetSessionEvent extends AuthenticationEvent {
+
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'GetSessionEvent';
+}
+
 class LoggedIn extends AuthenticationEvent {
+  @override
+  List<Object> get props => [];
+
   @override
   String toString() => 'LoggedIn';
 }
 
 class LoggedOut extends AuthenticationEvent {
+  @override
+  List<Object> get props => [];
+
   @override
   String toString() => 'LoggedOut';
 }

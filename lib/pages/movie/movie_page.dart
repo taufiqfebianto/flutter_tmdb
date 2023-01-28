@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
-import 'package:flutter_tmdb/widgets/square_gradient_button.dart';
 import 'package:flutter_tmdb/widgets/widgets.dart';
 
 import '../../shared/shared.dart';

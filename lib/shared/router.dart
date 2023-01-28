@@ -33,9 +33,6 @@ class Routers {
                   BlocProvider<SeriesBloc>(
                     create: (BuildContext context) => SeriesBloc(),
                   ),
-                  // BlocProvider<DetailStoryBloc>(
-                  //   create: (BuildContext context) => DetailStoryBloc(),
-                  // ),
                 ],
                 child: const HomeTabPage(),
               );
@@ -46,7 +43,6 @@ class Routers {
             }
 
             return const SplashPage();
-            // return const CircularProgressIndicator.adaptive();
           });
     },
     Routers.more: (BuildContext context) {

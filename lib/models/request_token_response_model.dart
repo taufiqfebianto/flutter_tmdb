@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-class RequsetTokenResponseModel {
-  RequsetTokenResponseModel({
-    required this.success,
-    required this.expiresAt,
-    required this.requestToken,
+class RequestTokenResponseModel {
+  RequestTokenResponseModel({
+    this.success,
+    this.expiresAt,
+    this.requestToken,
   });
 
-  bool success;
-  String expiresAt;
-  String requestToken;
+  bool? success;
+  String? expiresAt;
+  String? requestToken;
 
-  factory RequsetTokenResponseModel.fromRawJson(String str) =>
-      RequsetTokenResponseModel.fromJson(json.decode(str));
+  factory RequestTokenResponseModel.fromRawJson(String str) =>
+      RequestTokenResponseModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RequsetTokenResponseModel.fromJson(Map<String, dynamic> json) =>
-      RequsetTokenResponseModel(
+  factory RequestTokenResponseModel.fromJson(Map<String, dynamic> json) =>
+      RequestTokenResponseModel(
         success: json["success"],
         expiresAt: json["expires_at"],
         requestToken: json["request_token"],

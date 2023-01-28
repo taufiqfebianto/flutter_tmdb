@@ -77,11 +77,11 @@ class Network {
       'Accept': contentType,
     };
 
-    String token = await storage.getString(
-        boxName: describeEnum(StorageConstants.user), key: 'token');
-    if (token != '') {
-      headers['Authorization'] = 'Bearer $token';
-    }
+    // String token = await storage.getString(
+    //     boxName: describeEnum(StorageConstants.user), key: 'token');
+    // if (token != '') {
+    //   headers['Authorization'] = 'Bearer $token';
+    // }
 
     _dio.options.headers = headers;
     try {
