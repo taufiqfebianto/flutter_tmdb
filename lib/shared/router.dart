@@ -55,9 +55,11 @@ class Routers {
       );
     },
     Routers.detail: (BuildContext context) {
+      List<dynamic> args =
+          (ModalRoute.of(context) as dynamic).settings.arguments;
       return BlocProvider<DetailBloc>(
         create: (BuildContext context) => DetailBloc(),
-        child: DetailPage(),
+        child: DetailPage(results: args[0], index: args[1]),
       );
     },
   };

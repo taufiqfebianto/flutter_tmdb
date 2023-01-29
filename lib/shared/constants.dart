@@ -13,9 +13,9 @@ class Constants {
   static const String deleteSession = '/authentication/session';
 
   // MOVIE API
-  static const String getVideoMovie = '/movie/';
   static const String nowPlayingMovie = '/movie/now_playing';
   static const String popularMovie = '/movie/popular';
+  static const String getVideoMovie = '/movie/';
   // static const String topRatedMovie = '/movie/top_rated';
   // static const String upcomingMovie = '/movie/upcoming';
 

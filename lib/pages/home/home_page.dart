@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:flutter_tmdb/models/movie_video_response_model.dart';
 import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
 import 'package:flutter_tmdb/shared/shared.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
 import 'package:flutter_tmdb/styles/fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../widgets/widgets.dart';
@@ -22,15 +22,22 @@ class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
   HomeBloc? bloc = HomeBloc();
   String? id;
-  String videoId = 'twDOIy2kETw';
+  String videoIds = '';
+  List<String>? videoId = [''];
 
   PopularMovieResponseModel model = PopularMovieResponseModel();
+  MovieVideoResponseModel videoModel = MovieVideoResponseModel();
 
-  final YoutubePlayerController _controller =
-      YoutubePlayerController(initialVideoId: 'g4U4BQW9OEk');
-
-  final YoutubePlayerController _controller2 =
-      YoutubePlayerController(initialVideoId: 'twDOIy2kETw');
+  final YoutubePlayerController _videoController = YoutubePlayerController(
+      initialVideoId: 'g4U4BQW9OEk',
+      flags: const YoutubePlayerFlags(
+          autoPlay: true,
+          mute: true,
+          loop: true,
+          hideControls: true,
+          hideThumbnail: true,
+          controlsVisibleAtStart: false,
+          enableCaption: false));
 
   @override
   void initState() {
@@ -72,22 +79,9 @@ class _HomePageState extends State<HomePage> {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   ),
-                  child:
-                      // Image.network(
-                      //   '${Constants.baseImagePath}${model.results?[index].backdropPath}',
-                      //   fit: BoxFit.fill,
-                      // ),
-                      YoutubePlayer(
-                    controller: _controller2,
+                  child: YoutubePlayer(
+                    controller: _videoController,
                     showVideoProgressIndicator: true,
-                    // videoProgressIndicatorColor: Colors.amber,
-                    // progressColors: ProgressColors(
-                    //     playedColor: Colors.amber,
-                    //     handleColor: Colors.amberAccent,
-                    // ),
-                    // onReady: () {
-                    //   _controller.addListener(listener);
-                    // },
                   ),
                 ),
                 Column(
@@ -175,22 +169,28 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        Column(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.play_arrow_rounded,
-                                color: colorStyle.lightBlue(),
-                              ),
-                            ),
-                            Text(
-                              'Watch Now',
-                              style: styleText.lato(
-                                color: colorStyle.lightBlue(),
-                              ),
-                            ),
-                          ],
+                        // Column(
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.play_arrow_rounded,
+                        //         color: colorStyle.lightBlue(),
+                        //       ),
+                        //     ),
+                        //     Text(
+                        //       'Watch Now',
+                        //       style: styleText.lato(
+                        //         color: colorStyle.lightBlue(),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        Center(
+                          child: Image.asset(
+                            Constants.altLong,
+                            scale: 3,
+                          ),
                         ),
                         Column(
                           children: [
@@ -229,6 +229,14 @@ class _HomePageState extends State<HomePage> {
         if (state is GetPopularMovieSuccessState) {
           model = state.model;
         }
+        if (state is GetVideoSuccessState) {
+          videoModel = state.model;
+          // videoId!.clear();
+          // for (var a = 0; a < videoModel.results!.length; a++) {
+          //   videoId!.add(videoModel.results![a].key!);
+          // }
+
+        }
       }),
       builder: (context, state) {
         return Scaffold(
@@ -251,16 +259,8 @@ class _HomePageState extends State<HomePage> {
                       //   autoplay: true,
                       // ),
                       YoutubePlayer(
-                    controller: _controller,
+                    controller: _videoController,
                     showVideoProgressIndicator: true,
-                    // videoProgressIndicatorColor: Colors.amber,
-                    // progressColors: ProgressColors(
-                    //     playedColor: Colors.amber,
-                    //     handleColor: Colors.amberAccent,
-                    // ),
-                    // onReady: () {
-                    //   _controller.addListener(listener);
-                    // },
                   ),
                 ),
                 Container(
@@ -269,12 +269,20 @@ class _HomePageState extends State<HomePage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      squareGradientButton(icon: Icons.people_rounded),
-                      squareGradientButton(icon: Icons.attractions_rounded),
-                      squareGradientButton(icon: Icons.auto_awesome_rounded),
-                      squareGradientButton(icon: Icons.child_care_rounded),
-                      squareGradientButton(icon: Icons.tv_rounded),
-                      squareGradientButton(icon: Icons.movie_rounded),
+                      squareGradientButton(
+                          icon: Icons.movie_rounded, text: 'Box Office'),
+                      squareGradientButton(
+                          icon: Icons.tv_rounded, text: 'Series'),
+                      squareGradientButton(
+                          icon: Icons.people_rounded, text: 'Family'),
+                      squareGradientButton(
+                          icon: Icons.auto_awesome_rounded, text: 'Fantasy'),
+                      squareGradientButton(
+                          icon: Icons.local_police, text: 'Crime'),
+                      squareGradientButton(
+                          icon: Icons.spatial_tracking_outlined, text: 'Drama'),
+                      squareGradientButton(
+                          icon: Icons.face_rounded, text: 'Kids'),
                     ],
                   ),
                 ),

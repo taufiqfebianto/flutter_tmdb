@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../styles/styles.dart';
 
 Widget squareGradientButton({
-  IconData? icon
+  IconData? icon,
+  String? text,
 }) {
   return Container(
     margin: const EdgeInsets.only(right: 10),
@@ -17,13 +18,26 @@ Widget squareGradientButton({
         colors: <Color>[colorStyle.lightGreen(), colorStyle.lightBlue()],
       ),
     ),
-    child: IconButton(
-      onPressed: () {},
-      icon: Icon(
-        icon ?? Icons.settings_rounded,
-        color: colorStyle.darkBlue(),
-        size: 40,
-      ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          padding: const EdgeInsets.all(0),
+          onPressed: () {},
+          icon: Icon(
+            icon ?? Icons.settings_rounded,
+            color: colorStyle.darkBlue(),
+            size: 40,
+          ),
+        ),
+        Text(
+          text ?? 'Title',
+          style: styleText.lato(
+            color: colorStyle.darkBlue(),
+          ),
+        )
+      ],
     ),
   );
 }

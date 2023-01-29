@@ -135,7 +135,8 @@ class _MoviePageState extends State<MoviePage> {
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(Routers.detail);
+                          Navigator.of(context).pushNamed(Routers.detail,
+                              arguments: [nowPlayingModel.results, index]);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 5),
