@@ -8,3 +8,29 @@ abstract class HomeState extends Equatable {
 }
 
 class HomeInitial extends HomeState {}
+
+class GetPopularMovieSuccessState extends HomeState {
+  final PopularMovieResponseModel model;
+
+  const GetPopularMovieSuccessState(this.model);
+  @override
+  List<Object> get props => [model];
+
+  @override
+  String toString() {
+    return 'GetPopularMovieState : ${model.toJson()}';
+  }
+}
+
+class GetVideoSuccessState extends HomeState {
+  final MovieVideoResponseModel model;
+
+  const GetVideoSuccessState(this.model);
+  @override
+  List<Object> get props => [model];
+
+  @override
+  String toString() {
+    return 'GetVideoSuccessState : ${model.toJson()}';
+  }
+}

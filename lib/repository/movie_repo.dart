@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_tmdb/models/movie_video_response_model.dart';
 
 import '../models/models.dart';
 import '../models/popular_movie_response_model.dart';
@@ -9,7 +10,7 @@ class MovieRepo {
     try {
       final Map<String, dynamic> parameters = {
         'api_key': Constants.apiKey,
-        'page': 2
+        'page': 3
       };
 
       Map<String, dynamic> response = await network.getHttp(
@@ -24,11 +25,11 @@ class MovieRepo {
     }
   }
 
-   Future<NowPlayingMovieResponseModel> nowPlayingMovie() async {
+  Future<NowPlayingMovieResponseModel> nowPlayingMovie() async {
     try {
       final Map<String, dynamic> parameters = {
         'api_key': Constants.apiKey,
-        'page': 1
+        'page': 4
       };
 
       Map<String, dynamic> response = await network.getHttp(
@@ -37,6 +38,24 @@ class MovieRepo {
           contentType: 'application/json');
 
       return NowPlayingMovieResponseModel.fromJson(response);
+    } on DioError catch (e) {
+      // ignore: use_rethrow_when_possible
+      throw e;
+    }
+  }
+
+  Future<MovieVideoResponseModel> getVideo(String id) async {
+    try {
+      final Map<String, dynamic> parameters = {
+        'api_key': Constants.apiKey,
+      };
+
+      Map<String, dynamic> response = await network.getHttp(
+          path: '${Constants.getVideoMovie}$id/videos',
+          parameter: parameters,
+          contentType: 'application/json');
+
+      return MovieVideoResponseModel.fromJson(response);
     } on DioError catch (e) {
       // ignore: use_rethrow_when_possible
       throw e;

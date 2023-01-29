@@ -40,9 +40,11 @@ dependencies:
   flutter_swiper_null_safety: ^1.0.2
   google_fonts: ^3.0.1
   hive: ^2.2.3
+  intl: ^0.18.0
   path_provider: ^2.0.12
   pretty_dio_logger: ^1.1.1
   url_launcher: ^6.1.8
+  youtube_player_flutter: ^8.1.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

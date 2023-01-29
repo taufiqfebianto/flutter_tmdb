@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../pages/detail/bloc/detail.dart';
 import '../pages/home/bloc/home.dart';
 import '../pages/hometab/bloc/hometab.dart';
 import '../pages/more/bloc/more.dart';
@@ -12,6 +13,7 @@ import 'bloc/authentication_bloc.dart';
 class Routers {
   static const String home = '/home';
   static const String more = '/more';
+  static const String detail = '/detail';
 
   final route = <String, WidgetBuilder>{
     Routers.home: (BuildContext context) {
@@ -48,7 +50,14 @@ class Routers {
     Routers.more: (BuildContext context) {
       return BlocProvider<MoreBloc>(
         create: (BuildContext context) => MoreBloc(),
-        child: const MorePage(),
+        child: MorePage(
+            model: (ModalRoute.of(context) as dynamic).settings.arguments),
+      );
+    },
+    Routers.detail: (BuildContext context) {
+      return BlocProvider<DetailBloc>(
+        create: (BuildContext context) => DetailBloc(),
+        child: DetailPage(),
       );
     },
   };

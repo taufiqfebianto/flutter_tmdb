@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:flutter_tmdb/models/on_air_series_response_model.dart';
 import 'package:flutter_tmdb/models/popular_series_response_model.dart';
-import 'package:flutter_tmdb/styles/colors.dart';
 
 import '../../shared/shared.dart';
+import '../../styles/styles.dart';
 import '../../widgets/widgets.dart';
 import 'bloc/series.dart';
 
@@ -59,12 +59,29 @@ class _SeriesPageState extends State<SeriesPage> {
                   child: Swiper(
                     controller: swiperController,
                     itemBuilder: (BuildContext context, int index) {
-                      return Image.network(
-                        '${Constants.baseImagePath}${popularModel.results?[index].backdropPath}',
-                        fit: BoxFit.fill,
-                      );
+                      return popularModel.results?[index].backdropPath != null
+                          ? Stack(
+                              children: [
+                                Image.network(
+                                  '${Constants.baseImagePath}${popularModel.results?[index].backdropPath}',
+                                  fit: BoxFit.fill,
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  left: 10,
+                                  child: Text(
+                                    popularModel.results![index].name!,
+                                    style: styleText.lato(
+                                        color: colorStyle.white(),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            )
+                          : loadingWidget();
                     },
-                    itemCount: 6,
+                    itemCount: 10,
                     autoplay: true,
                   ),
                 ),
@@ -77,7 +94,7 @@ class _SeriesPageState extends State<SeriesPage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: onAirModel.results?.length,
+                    itemCount: 6,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {},
@@ -85,9 +102,11 @@ class _SeriesPageState extends State<SeriesPage> {
                           margin: const EdgeInsets.only(right: 5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                                '${Constants.baseImagePath}${onAirModel.results?[index].posterPath}',
-                                fit: BoxFit.cover),
+                            child: onAirModel.results?[index].posterPath != null
+                                ? Image.network(
+                                    '${Constants.baseImagePath}${onAirModel.results?[index].posterPath}',
+                                    fit: BoxFit.cover)
+                                : loadingWidget(),
                           ),
                         ),
                       );
@@ -103,7 +122,7 @@ class _SeriesPageState extends State<SeriesPage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: popularModel.results?.length,
+                    itemCount: 6,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {},
@@ -111,9 +130,12 @@ class _SeriesPageState extends State<SeriesPage> {
                           margin: const EdgeInsets.only(right: 5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                                '${Constants.baseImagePath}${popularModel.results?[index].posterPath}',
-                                fit: BoxFit.cover),
+                            child: popularModel.results?[index].posterPath !=
+                                    null
+                                ? Image.network(
+                                    '${Constants.baseImagePath}${popularModel.results?[index].posterPath}',
+                                    fit: BoxFit.cover)
+                                : loadingWidget(),
                           ),
                         ),
                       );

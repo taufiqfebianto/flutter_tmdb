@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
 import 'package:flutter_tmdb/styles/fonts.dart';
 
+import '../../shared/shared.dart';
 import 'bloc/more.dart';
 
 class MorePage extends StatefulWidget {
-  const MorePage({super.key});
+  final PopularMovieResponseModel? model;
+  const MorePage({super.key, this.model});
 
   @override
   State<MorePage> createState() => _MorePageState();
@@ -64,20 +67,20 @@ class _MorePageState extends State<MorePage> {
             backgroundColor: colorStyle.darkBlue(),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GridView.builder(
-              padding: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                 ),
-                itemCount: 100,
+                itemCount: widget.model?.results?.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(5),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
                       child: Image.network(
-                          'https://s1.bukalapak.com/img/68286857232/large/Poster_Film___Avengers_Endgame___Marvel_Studios___Movie_Post.jpg',
+                          '${Constants.baseImagePath}${widget.model!.results![index].posterPath}',
                           fit: BoxFit.cover),
                     ),
                   );

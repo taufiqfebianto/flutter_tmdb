@@ -106,9 +106,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   leading: Icon(Icons.settings_rounded),
                   title: Text('Preference'),
                 ),
+                // const ListTile(
+                //   leading: Icon(Icons.question_mark_rounded),
+                //   title: Text('Help'),
+                // ),
                 const ListTile(
-                  leading: Icon(Icons.question_mark_rounded),
-                  title: Text('Help'),
+                  leading: Icon(Icons.logout_rounded),
+                  title: Text('Exit'),
                 ),
                 // Padding(
                 //   padding: const EdgeInsets.symmetric(horizontal: 20),

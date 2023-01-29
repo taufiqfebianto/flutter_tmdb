@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:flutter_tmdb/models/models.dart';
-import 'package:flutter_tmdb/styles/colors.dart';
 import 'package:flutter_tmdb/widgets/widgets.dart';
 
 import '../../models/popular_movie_response_model.dart';
 import '../../shared/shared.dart';
+import '../../styles/styles.dart';
 import 'bloc/movie.dart';
 
 class MoviePage extends StatefulWidget {
@@ -63,12 +63,29 @@ class _MoviePageState extends State<MoviePage> {
                   child: Swiper(
                     controller: swiperController,
                     itemBuilder: (BuildContext context, int index) {
-                      return Image.network(
-                        '${Constants.baseImagePath}${popularModel.results?[index].backdropPath}',
-                        fit: BoxFit.fill,
-                      );
+                      return popularModel.results?[index].backdropPath != null
+                          ? Stack(
+                              children: [
+                                Image.network(
+                                  '${Constants.baseImagePath}${popularModel.results?[index].backdropPath}',
+                                  fit: BoxFit.fill,
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  left: 10,
+                                  child: Text(
+                                    popularModel.results![index].title!,
+                                    style: styleText.lato(
+                                        color: colorStyle.white(),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            )
+                          : loadingWidget();
                     },
-                    itemCount: 6,
+                    itemCount: 10,
                     autoplay: true,
                   ),
                 ),
@@ -81,7 +98,7 @@ class _MoviePageState extends State<MoviePage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: popularModel.results?.length,
+                    itemCount: 6,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {},
@@ -89,9 +106,12 @@ class _MoviePageState extends State<MoviePage> {
                           margin: const EdgeInsets.only(right: 5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                                '${Constants.baseImagePath}${popularModel.results?[index].posterPath}',
-                                fit: BoxFit.cover),
+                            child: popularModel.results?[index].posterPath !=
+                                    null
+                                ? Image.network(
+                                    '${Constants.baseImagePath}${popularModel.results?[index].posterPath}',
+                                    fit: BoxFit.cover)
+                                : loadingWidget(),
                           ),
                         ),
                       );
@@ -100,7 +120,8 @@ class _MoviePageState extends State<MoviePage> {
                 ),
                 titleButton(
                     onTap: () {
-                      Navigator.of(context).pushNamed(Routers.more);
+                      Navigator.of(context)
+                          .pushNamed(Routers.more, arguments: popularModel);
                     },
                     title: 'Now Playing'),
                 SizedBox(
@@ -110,17 +131,22 @@ class _MoviePageState extends State<MoviePage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: nowPlayingModel.results?.length,
+                    itemCount: 6,
                     itemBuilder: ((context, int index) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Routers.detail);
+                        },
                         child: Container(
                           margin: const EdgeInsets.only(right: 5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                                '${Constants.baseImagePath}${nowPlayingModel.results?[index].posterPath}',
-                                fit: BoxFit.cover),
+                            child: nowPlayingModel.results?[index].posterPath !=
+                                    null
+                                ? Image.network(
+                                    '${Constants.baseImagePath}${nowPlayingModel.results?[index].posterPath}',
+                                    fit: BoxFit.cover)
+                                : loadingWidget(),
                           ),
                         ),
                       );

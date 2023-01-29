@@ -13,17 +13,18 @@ class Constants {
   static const String deleteSession = '/authentication/session';
 
   // MOVIE API
-  static const String latestMovie = '/movie/latest';
+  static const String getVideoMovie = '/movie/';
   static const String nowPlayingMovie = '/movie/now_playing';
   static const String popularMovie = '/movie/popular';
-  static const String topRatedMovie = '/movie/top_rated';
-  static const String upcomingMovie = '/movie/upcoming';
+  // static const String topRatedMovie = '/movie/top_rated';
+  // static const String upcomingMovie = '/movie/upcoming';
 
   // SERIES API
-  static const String latestTv = '/tv/latest';
+  // static const String latestTv = '/tv/latest';
   static const String popularTv = '/tv/popular';
-  static const String topRatedTv = '/tv/top_rated';
+  // static const String topRatedTv = '/tv/top_rated';
   static const String onAirTv = '/tv/on_the_air';
+  static const String getVideoTv = '/tv/';
 
   // ASSET IMAGES
   static const String baseImagePath = 'https://image.tmdb.org/t/p/original';
