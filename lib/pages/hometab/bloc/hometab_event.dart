@@ -13,6 +13,16 @@ class HometabChoose extends HometabEvent {
 
   @override
   String toString() {
-    return 'HomeTabChoose $tab';
+    return 'HomeTabChoose : $tab';
+  }
+}
+
+class DeleteSessionEvent extends HometabEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return 'DeleteSessionEvent : ';
   }
 }

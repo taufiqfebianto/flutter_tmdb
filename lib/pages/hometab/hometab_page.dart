@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tmdb/pages/home/home_page.dart';
@@ -17,6 +19,7 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class _HomeTabPageState extends State<HomeTabPage> {
+  HometabBloc? bloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedTab = 1;
@@ -28,28 +31,26 @@ class _HomeTabPageState extends State<HomeTabPage> {
     if (state == HometabState.series) {
       return const SeriesPage();
     }
-    // if (state == HometabState.series) {
-    //   return const SeriesPage();
-    // }
-    // if (state == HometabState.series) {
-    //   return const SeriesPage();
-    // }
-
     return const HomePage();
+  }
+
+  @override
+  void initState() {
+    bloc = BlocProvider.of<HometabBloc>(context);
+    super.initState();
+  }
+
+  _onExit() {
+    bloc!.add(DeleteSessionEvent());
+    debugPrint('TAP');
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HometabBloc, HometabState>(listener: ((context, state) {
-      // if (state == HometabState.movie) {
-      //   title = 'Movie';
-      // }
-      // if (state == HometabState.tmdb) {
-      //   title = 'TmDB';
-      // }
-      // if (state == HometabState.series) {
-      //   title = 'Series';
-      // }
+      if (state == HometabState.exit) {
+        exit(0);
+      }
     }), builder: (context, state) {
       return Scaffold(
         key: _scaffoldKey,
@@ -80,20 +81,46 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     color: colorStyle.darkBlue(),
                   ),
                 ),
-                const ListTile(
-                  leading: Icon(Icons.download_rounded),
-                  title: Text('Download'),
-                  subtitle: Text('Save to watch later'),
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.download_rounded),
+                    title: Text('Download'),
+                    // subtitle: Text('save to watch later'),
+                  ),
                 ),
-                const ListTile(
-                  leading: Icon(Icons.playlist_add_rounded),
-                  title: Text('Watchlist'),
-                  subtitle: Text('Save to watch later'),
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.playlist_add_rounded),
+                    title: Text('Watchlist'),
+                    // subtitle: Text('save to watch later'),
+                  ),
                 ),
-                const ListTile(
-                  leading: Icon(Icons.movie_rounded),
-                  title: Text('Genre'),
-                  subtitle: Text('Save to watch later'),
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.timeline_outlined),
+                    title: Text('Popular'),
+                    subtitle: Text('popular movie & tv series'),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.av_timer_rounded),
+                    title: Text('Upcoming'),
+                    subtitle: Text('upcoming movie & tv series'),
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.movie_rounded),
+                    title: Text('Genre'),
+                    subtitle: Text('category movie & tv series'),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -102,22 +129,30 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     color: colorStyle.darkBlue(),
                   ),
                 ),
-                const ListTile(
-                  leading: Icon(Icons.settings_rounded),
-                  title: Text('Preference'),
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.settings_rounded),
+                    title: Text('Preference'),
+                  ),
                 ),
                 // const ListTile(
                 //   leading: Icon(Icons.question_mark_rounded),
                 //   title: Text('Help'),
                 // ),
-                const ListTile(
-                  leading: Icon(Icons.logout_rounded),
-                  title: Text('Exit'),
+                InkWell(
+                  onTap: () {
+                    _onExit();
+                  },
+                  child: const ListTile(
+                    leading: Icon(Icons.logout_rounded),
+                    title: Text('Exit'),
+                  ),
                 ),
                 // Padding(
                 //   padding: const EdgeInsets.symmetric(horizontal: 20),
                 //   child: Divider(
-                    // thickness: 1,
+                // thickness: 1,
                 //     color: colorStyle.lightGreen(),
                 //   ),
                 // ),
@@ -185,16 +220,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
             });
           },
           items: const [
-            // BottomNavigationBarItem(
-            //     icon: Icon(Icons.movie_rounded), label: 'Home'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.movie_rounded), label: 'Movie'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.logo_dev_rounded), label: 'TMDB'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.tv_rounded), label: 'Series'),
-            // BottomNavigationBarItem(
-            //     icon: Icon(Icons.movie_rounded), label: 'Preference'),
           ],
         ),
       );

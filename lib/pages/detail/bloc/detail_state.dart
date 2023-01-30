@@ -8,3 +8,16 @@ abstract class DetailState extends Equatable {
 }
 
 class DetailInitial extends DetailState {}
+
+class GetVideoSuccessState extends DetailState {
+  final MovieVideoResponseModel model;
+
+  const GetVideoSuccessState(this.model);
+  @override
+  List<Object> get props => [model];
+
+  @override
+  String toString() {
+    return 'GetVideoSuccessState : ${model.toJson()}';
+  }
+}

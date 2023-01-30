@@ -7,3 +7,15 @@ abstract class DetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class GetVideoEvent extends DetailEvent {
+  final String id;
+
+  const GetVideoEvent(this.id);
+  @override
+  List<Object> get props => [id];
+
+  @override
+  String toString() {
+    return 'GetVideoEvent : $id';
+  }
+}

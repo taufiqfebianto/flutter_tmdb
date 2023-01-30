@@ -48,6 +48,10 @@ class AuthenticationBloc
         String token = await storage.getString(
             boxName: describeEnum(StorageConstants.user), key: 'token');
         ValidateTokenResponseModel response = await userRepo.getSession(token);
+        await storage.putString(
+            boxName: describeEnum(StorageConstants.user),
+            key: 'session',
+            value: response.sessionId);
         emit(GetSessionSuccessState(response));
       } on DioError catch (e) {
         // ignore: use_rethrow_when_possible

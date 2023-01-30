@@ -81,7 +81,7 @@ class _SeriesPageState extends State<SeriesPage> {
                             )
                           : loadingWidget();
                     },
-                    itemCount: 10,
+                    itemCount: 6,
                     autoplay: true,
                   ),
                 ),
@@ -94,7 +94,7 @@ class _SeriesPageState extends State<SeriesPage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 6,
+                    itemCount: 5,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {},
@@ -122,7 +122,7 @@ class _SeriesPageState extends State<SeriesPage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 6,
+                    itemCount: 5,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {},

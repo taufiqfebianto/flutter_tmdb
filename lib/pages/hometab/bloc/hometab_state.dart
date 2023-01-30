@@ -9,4 +9,4 @@ part of 'hometab_bloc.dart';
 
 // class HometabInitial extends HometabState {}
 
-enum HometabState { movie, tmdb, series }
+enum HometabState { movie, tmdb, series, exit }

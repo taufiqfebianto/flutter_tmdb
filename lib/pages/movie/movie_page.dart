@@ -85,7 +85,7 @@ class _MoviePageState extends State<MoviePage> {
                             )
                           : loadingWidget();
                     },
-                    itemCount: 10,
+                    itemCount: 6,
                     autoplay: true,
                   ),
                 ),
@@ -98,7 +98,7 @@ class _MoviePageState extends State<MoviePage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 6,
+                    itemCount: 5,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {},
@@ -131,12 +131,12 @@ class _MoviePageState extends State<MoviePage> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 6,
+                    itemCount: 5,
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(Routers.detail,
-                              arguments: [nowPlayingModel.results, index]);
+                              arguments: [nowPlayingModel, index]);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 5),

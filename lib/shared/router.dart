@@ -59,7 +59,7 @@ class Routers {
           (ModalRoute.of(context) as dynamic).settings.arguments;
       return BlocProvider<DetailBloc>(
         create: (BuildContext context) => DetailBloc(),
-        child: DetailPage(results: args[0], index: args[1]),
+        child: DetailPage(model: args[0], index: args[1]),
       );
     },
   };

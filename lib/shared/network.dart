@@ -97,9 +97,9 @@ class Network {
 
   Future<dynamic> deleteHttp({
     required String? path,
-    // Map<String, dynamic>? parameter,
+    Map<String, dynamic>? parameter,
     required String? contentType,
-    // required Map<String, dynamic>? content,
+    Map<String, dynamic>? content,
   }) async {
     _dio.options.responseType = ResponseType.json;
 
@@ -118,7 +118,8 @@ class Network {
     try {
       Response response;
 
-      response = await _dio.delete(path!);
+      response =
+          await _dio.delete(path!, data: content, queryParameters: parameter);
 
       return response.data;
     } on DioError catch (e) {

@@ -10,9 +10,9 @@ import '../../widgets/widgets.dart';
 import 'bloc/detail.dart';
 
 class DetailPage extends StatefulWidget {
-  final List<Result>? results;
+  final NowPlayingMovieResponseModel? model;
   final int? index;
-  const DetailPage({super.key, this.results, this.index});
+  const DetailPage({super.key, this.model, this.index});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -20,9 +20,10 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   DetailBloc? bloc;
-  String release = '';
+  String? initialVideo;
+
   final YoutubePlayerController _videoController = YoutubePlayerController(
-      initialVideoId: 'g4U4BQW9OEk',
+      initialVideoId: '',
       flags: const YoutubePlayerFlags(
           autoPlay: true,
           mute: true,
@@ -35,8 +36,11 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     bloc = BlocProvider.of<DetailBloc>(context);
-    release =
-        DateFormat('yyyy').format(widget.results![widget.index!].releaseDate!);
+    bloc!.add(
+      GetVideoEvent(
+        widget.model!.results![widget.index!].id.toString(),
+      ),
+    );
     super.initState();
   }
 
@@ -52,7 +56,17 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DetailBloc, DetailState>(
-      listener: ((context, state) {}),
+      listener: ((context, state) {
+        if (state is GetVideoSuccessState) {
+          initialVideo = state.model.results![0].key;
+          // videoModel = state.model;
+          // videoId!.clear();
+          // for (var a = 0; a < videoModel.results!.length; a++) {
+          //   videoId!.add(videoModel.results![a].key!);
+          // }
+          debugPrint(initialVideo);
+        }
+      }),
       builder: (context, state) {
         return Scaffold(
           backgroundColor: colorStyle.black(),
@@ -65,7 +79,7 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
             title: Text(
-              widget.results![widget.index!].title!,
+              widget.model!.results![widget.index!].title!,
               style: styleText.lato(
                   fontWeight: FontWeight.bold,
                   color: colorStyle.lightBlue(),
@@ -98,7 +112,7 @@ class _DetailPageState extends State<DetailPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: Image.network(
-                                '${Constants.baseImagePath}${widget.results![widget.index!].posterPath!}',
+                                '${Constants.baseImagePath}${widget.model!.results![widget.index!].posterPath!}',
                                 fit: BoxFit.cover),
                           ),
                         ),
@@ -109,7 +123,7 @@ class _DetailPageState extends State<DetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.results![widget.index!].title!,
+                                widget.model!.results![widget.index!].title!,
                                 style: styleText.lato(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -118,7 +132,8 @@ class _DetailPageState extends State<DetailPage> {
                                 style: styleText.lato(),
                               ),
                               Text(
-                                release,
+                                DateFormat('yyyy').format(widget.model!
+                                    .results![widget.index!].releaseDate!),
                                 style: styleText.lato(),
                               ),
                             ],
@@ -130,7 +145,7 @@ class _DetailPageState extends State<DetailPage> {
                       height: 10,
                     ),
                     Text(
-                      widget.results![widget.index!].overview!,
+                      widget.model!.results![widget.index!].overview!,
                       textAlign: TextAlign.justify,
                       style: styleText.lato(
                         fontSize: 16,
@@ -155,25 +170,7 @@ class _DetailPageState extends State<DetailPage> {
                       Column(
                         children: [
                           IconButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.thumb_up_rounded,
-                              color: colorStyle.lightBlue(),
-                            ),
-                          ),
-                          Text(
-                            'Rate',
-                            style: styleText.lato(
-                              color: colorStyle.lightBlue(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             onPressed: () {},
                             icon: Icon(
                               Icons.add_rounded,
@@ -191,7 +188,25 @@ class _DetailPageState extends State<DetailPage> {
                       Column(
                         children: [
                           IconButton(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.play_arrow_rounded,
+                              color: colorStyle.lightBlue(),
+                            ),
+                          ),
+                          Text(
+                            'Watch',
+                            style: styleText.lato(
+                              color: colorStyle.lightBlue(),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            padding: const EdgeInsets.all(0),
                             onPressed: () {},
                             icon: Icon(
                               Icons.share_rounded,
@@ -209,19 +224,38 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                 ),
-                // Container(
-                //   margin: const EdgeInsets.symmetric(vertical: 15),
-                //   child: Text(
-                //     'Trailer',
-                //     style: styleText.lato(
-                //         fontWeight: FontWeight.bold,
-                //         color: colorStyle.lightBlue(),
-                //         fontSize: 18),
-                //   ),
-                // ),
-                // listTrailer(),
+
                 titleButton(onTap: () {}, title: 'More Like This'),
-                listMovie()
+                SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: ((context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Routers.detail,
+                              arguments: [widget.model, index]);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: widget.model!.results![index].posterPath !=
+                                    null
+                                ? Image.network(
+                                    '${Constants.baseImagePath}${widget.model!.results![index].posterPath}',
+                                    fit: BoxFit.cover)
+                                : loadingWidget(),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
               ],
             ),
           ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:flutter_tmdb/models/movie_video_response_model.dart';
 import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
 import 'package:flutter_tmdb/shared/shared.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
 import 'package:flutter_tmdb/styles/fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../widgets/widgets.dart';
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                                   color: colorStyle.white(),
                                 ),
                                 Text(
-                                  ' 2020',
+                                  ' ${DateFormat('yyyy').format(model.results![index].releaseDate!)}',
                                   style: styleText.lato(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12),
@@ -147,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     const SizedBox(
-                      height: 40,
+                      height: 25,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -155,7 +156,9 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                              
+                              },
                               icon: Icon(
                                 Icons.add_rounded,
                                 color: colorStyle.lightBlue(),
@@ -169,29 +172,29 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        // Column(
-                        //   children: [
-                        //     IconButton(
-                        //       onPressed: () {},
-                        //       icon: Icon(
-                        //         Icons.play_arrow_rounded,
-                        //         color: colorStyle.lightBlue(),
-                        //       ),
-                        //     ),
-                        //     Text(
-                        //       'Watch Now',
-                        //       style: styleText.lato(
-                        //         color: colorStyle.lightBlue(),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        Center(
-                          child: Image.asset(
-                            Constants.altLong,
-                            scale: 3,
-                          ),
+                        Column(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.play_arrow_rounded,
+                                color: colorStyle.lightBlue(),
+                              ),
+                            ),
+                            Text(
+                              'Watch Now',
+                              style: styleText.lato(
+                                color: colorStyle.lightBlue(),
+                              ),
+                            ),
+                          ],
                         ),
+                        // Center(
+                        //   child: Image.asset(
+                        //     Constants.altLong,
+                        //     scale: 3,
+                        //   ),
+                        // ),
                         Column(
                           children: [
                             IconButton(

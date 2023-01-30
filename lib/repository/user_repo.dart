@@ -71,4 +71,31 @@ class UserRepo {
       throw e;
     }
   }
+
+  Future deleteSession() async {
+    try {
+      String session = await storage.getString(
+          boxName: describeEnum(StorageConstants.user), key: 'session');
+
+      final Map<String, dynamic> parameters = {
+        'api_key': Constants.apiKey,
+      };
+
+      final Map<String, dynamic> content = {
+        'session_id': session,
+      };
+
+      debugPrint('session : $session | apiKey : ${Constants.apiKey}');
+      await network.deleteHttp(
+          path: Constants.deleteSession,
+          parameter: parameters,
+          content: content,
+          contentType: 'application/json');
+
+      return true;
+    } on DioError catch (e) {
+      // ignore: use_rethrow_when_possible
+      throw e;
+    }
+  }
 }
