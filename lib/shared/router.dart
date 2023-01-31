@@ -70,7 +70,7 @@ class Routers {
           (ModalRoute.of(context) as dynamic).settings.arguments;
       return BlocProvider<DetailBloc>(
         create: (BuildContext context) => DetailBloc(),
-        child: DetailPage(model: args[0], index: args[1]),
+        child: DetailPage(model: args[0], videoId: args[1],index: args[2]),
       );
     },
     Routers.download: (BuildContext context) {

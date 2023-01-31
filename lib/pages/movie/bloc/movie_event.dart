@@ -56,3 +56,16 @@ class GetNowPlayingMovieEvent extends MovieEvent {
     return 'GetNowPlayingdMovieEvent : ';
   }
 }
+
+class GetVideoEvent extends MovieEvent {
+  final String id;
+
+  const GetVideoEvent(this.id);
+  @override
+  List<Object> get props => [id];
+
+  @override
+  String toString() {
+    return 'GetVideoEvent : $id';
+  }
+}

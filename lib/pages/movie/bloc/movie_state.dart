@@ -64,4 +64,17 @@ class GetNowPlayingMovieSuccessState extends MovieState {
   }
 }
 
+class GetVideoSuccessState extends MovieState {
+  final MovieVideoResponseModel model;
+
+  const GetVideoSuccessState(this.model);
+  @override
+  List<Object> get props => [model];
+
+  @override
+  String toString() {
+    return 'GetVideoSuccessState : ${model.toJson()}';
+  }
+}
+
 class FailedState extends MovieState {}

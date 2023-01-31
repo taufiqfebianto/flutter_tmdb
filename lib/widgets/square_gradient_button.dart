@@ -15,7 +15,7 @@ Widget squareGradientButton({
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: <Color>[colorStyle.lightGreen(), colorStyle.lightBlue()],
+        colors: <Color>[colorStyle.darkBlue(), colorStyle.lightBlue()],
       ),
     ),
     child: Column(
@@ -27,7 +27,7 @@ Widget squareGradientButton({
           onPressed: () {},
           icon: Icon(
             icon ?? Icons.settings_rounded,
-            color: colorStyle.darkBlue(),
+            color: colorStyle.lightGreen().withOpacity(0.6),
             size: 40,
           ),
         ),

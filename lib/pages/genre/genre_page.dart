@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/shared.dart';
 import '../../styles/styles.dart';
-import '../../widgets/widgets.dart';
 import 'bloc/genre_bloc.dart';
 
 class GenrePage extends StatefulWidget {

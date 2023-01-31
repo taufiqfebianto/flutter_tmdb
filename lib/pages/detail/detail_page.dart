@@ -4,7 +4,6 @@ import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../../models/nowplaying_movie_response_model.dart';
 import '../../shared/shared.dart';
 import '../../styles/styles.dart';
 import '../../widgets/widgets.dart';
@@ -13,7 +12,8 @@ import 'bloc/detail.dart';
 class DetailPage extends StatefulWidget {
   final PopularMovieResponseModel? model;
   final int? index;
-  const DetailPage({super.key, this.model, this.index});
+  final String? videoId;
+  const DetailPage({super.key, this.model, this.index, this.videoId});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -23,25 +23,25 @@ class _DetailPageState extends State<DetailPage> {
   DetailBloc? bloc;
   String? initialVideo;
 
-  final YoutubePlayerController _videoController = YoutubePlayerController(
-      initialVideoId: '',
-      flags: const YoutubePlayerFlags(
-          autoPlay: true,
-          mute: true,
-          loop: true,
-          hideControls: true,
-          hideThumbnail: true,
-          controlsVisibleAtStart: false,
-          enableCaption: false));
+  late YoutubePlayerController _videoController;
 
   @override
   void initState() {
     bloc = BlocProvider.of<DetailBloc>(context);
-    bloc!.add(
-      GetVideoEvent(
-        widget.model!.results![widget.index!].id.toString(),
+
+    _videoController = YoutubePlayerController(
+      initialVideoId: widget.videoId!,
+      flags: const YoutubePlayerFlags(
+        mute: false,
+        autoPlay: true,
+        disableDragSeek: false,
+        loop: false,
+        isLive: false,
+        forceHD: false,
+        enableCaption: true,
       ),
     );
+
     super.initState();
   }
 
@@ -54,18 +54,30 @@ class _DetailPageState extends State<DetailPage> {
     Navigator.of(context).popUntil(ModalRoute.withName(Routers.home));
   }
 
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: styleText.lato(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: colorStyle.darkBlue().withOpacity(0.5),
+        behavior: SnackBarBehavior.floating,
+        elevation: 1.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DetailBloc, DetailState>(
       listener: ((context, state) {
         if (state is GetVideoSuccessState) {
           initialVideo = state.model.results![0].key;
-          // videoModel = state.model;
-          // videoId!.clear();
-          // for (var a = 0; a < videoModel.results!.length; a++) {
-          //   videoId!.add(videoModel.results![a].key!);
-          // }
-          debugPrint(initialVideo);
         }
       }),
       builder: (context, state) {
@@ -79,23 +91,21 @@ class _DetailPageState extends State<DetailPage> {
                 color: colorStyle.lightBlue(),
               ),
             ),
-            title: Text(
-              widget.model!.results![widget.index!].title!,
-              style: styleText.lato(
-                  fontWeight: FontWeight.bold,
-                  color: colorStyle.lightBlue(),
-                  fontSize: 18),
-            ),
+            title: Wrap(children: [
+              Text(
+                widget.model!.results![widget.index!].title!,
+                style: styleText.lato(
+                    fontWeight: FontWeight.bold,
+                    color: colorStyle.lightBlue(),
+                    fontSize: 18),
+              ),
+            ]),
             backgroundColor: colorStyle.darkBlue(),
           ),
           body: Padding(
             padding: const EdgeInsets.all(25),
             child: ListView(
               children: [
-                // Image.network(
-                //   'https://4.bp.blogspot.com/-CJzAMtILkLA/XEQrxmj6p6I/AAAAAAAAMbo/VaLGgEeDy5YAAyKOO2UBbjPbwN2A6iNhACLcBGAs/s640/1_jfR0trcAPT3udktrFkOebA.jpg',
-                //   fit: BoxFit.fill,
-                // ),
                 YoutubePlayer(
                   controller: _videoController,
                   showVideoProgressIndicator: true,
@@ -123,10 +133,19 @@ class _DetailPageState extends State<DetailPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.model!.results![widget.index!].title!,
-                                style: styleText.lato(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Wrap(
+                                  children: [
+                                    Text(
+                                      widget.model!.results![widget.index!]
+                                          .title!,
+                                      style: styleText.lato(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Text(
                                 'Genre - Genre - Genre',
@@ -156,7 +175,7 @@ class _DetailPageState extends State<DetailPage> {
                       height: 5,
                     ),
                     Text(
-                      'Starring Ralph, Joko, Roy, Nicholas',
+                      'Starring Tom, Catherin, Ralph, Roy, Nicholas',
                       style: styleText.lato(
                         color: colorStyle.white().withOpacity(0.7),
                       ),
@@ -172,7 +191,9 @@ class _DetailPageState extends State<DetailPage> {
                         children: [
                           IconButton(
                             padding: const EdgeInsets.all(0),
-                            onPressed: () {},
+                            onPressed: () {
+                              _showSnackBar('Added to watchlist');
+                            },
                             icon: Icon(
                               Icons.add_rounded,
                               color: colorStyle.lightBlue(),
@@ -225,7 +246,6 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                 ),
-
                 titleButton(onTap: () {}, title: 'More Like This'),
                 SizedBox(
                   height: 220,

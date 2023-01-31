@@ -28,7 +28,11 @@ class _HomePageState extends State<HomePage> {
   PopularMovieResponseModel model = PopularMovieResponseModel();
   MovieVideoResponseModel videoModel = MovieVideoResponseModel();
 
-  final YoutubePlayerController _videoController = YoutubePlayerController(
+  late YoutubePlayerController _bottomVideoController;
+
+  final bool _isPlayerReady = false;
+
+  final YoutubePlayerController _topVideoController = YoutubePlayerController(
       initialVideoId: 'g4U4BQW9OEk',
       flags: const YoutubePlayerFlags(
           autoPlay: true,
@@ -42,8 +46,27 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _bottomVideoController = YoutubePlayerController(
+      initialVideoId: videoIds,
+      flags: const YoutubePlayerFlags(
+        mute: false,
+        autoPlay: true,
+        disableDragSeek: false,
+        loop: false,
+        isLive: false,
+        forceHD: false,
+        enableCaption: true,
+      ),
+    )..addListener(listener);
+
     bloc = BlocProvider.of<HomeBloc>(context);
     bloc!.add(GetPopularMovieEvent());
+  }
+
+  void listener() {
+    if (_isPlayerReady && mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -51,18 +74,33 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  _showPriview(int index, int id) {
-    bloc!.add(GetVideoEvent(id.toString()));
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: styleText.lato(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: colorStyle.darkBlue().withOpacity(0.5),
+        behavior: SnackBarBehavior.floating,
+        elevation: 1.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+    );
+  }
+
+  _showPreview(int index) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
         backgroundColor: colorStyle.transparent(),
         builder: (BuildContext builder) {
           return Container(
-            // padding: EdgeInsets.all(10),
             height: MediaQuery.of(context).size.height / 2.5,
             decoration: BoxDecoration(
-              // borderRadius: BorderRadius.circular(10),
               gradient: LinearGradient(
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(0.0, 0.7),
@@ -80,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                     topRight: Radius.circular(15),
                   ),
                   child: YoutubePlayer(
-                    controller: _videoController,
+                    controller: _bottomVideoController,
                     showVideoProgressIndicator: true,
                   ),
                 ),
@@ -155,7 +193,10 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                _showSnackBar('Added to watchlist');
+                              },
                               icon: Icon(
                                 Icons.add_rounded,
                                 color: colorStyle.lightBlue(),
@@ -186,18 +227,15 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        // Center(
-                        //   child: Image.asset(
-                        //     Constants.altLong,
-                        //     scale: 3,
-                        //   ),
-                        // ),
                         Column(
                           children: [
                             IconButton(
                               onPressed: () {
+                                setState(() {
+                                  currentIndex = index;
+                                });
                                 Navigator.of(context).pushNamed(Routers.detail,
-                                    arguments: [model, index]);
+                                    arguments: [model, videoIds, currentIndex]);
                               },
                               icon: Icon(
                                 Icons.info_rounded,
@@ -233,12 +271,8 @@ class _HomePageState extends State<HomePage> {
           model = state.model;
         }
         if (state is GetVideoSuccessState) {
-          videoModel = state.model;
-          // videoId!.clear();
-          // for (var a = 0; a < videoModel.results!.length; a++) {
-          //   videoId!.add(videoModel.results![a].key!);
-          // }
-
+          videoIds = state.model.results![0].key!;
+          _showPreview(currentIndex);
         }
       }),
       builder: (context, state) {
@@ -250,19 +284,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SizedBox(
                   height: 200,
-                  child:
-                      // Swiper(
-                      //   itemBuilder: (BuildContext context, int index) {
-                      //     return Image.network(
-                      //       'https://4.bp.blogspot.com/-CJzAMtILkLA/XEQrxmj6p6I/AAAAAAAAMbo/VaLGgEeDy5YAAyKOO2UBbjPbwN2A6iNhACLcBGAs/s640/1_jfR0trcAPT3udktrFkOebA.jpg',
-                      //       fit: BoxFit.fill,
-                      //     );
-                      //   },
-                      //   itemCount: 8,
-                      //   autoplay: true,
-                      // ),
-                      YoutubePlayer(
-                    controller: _videoController,
+                  child: YoutubePlayer(
+                    controller: _topVideoController,
                     showVideoProgressIndicator: true,
                   ),
                 ),
@@ -291,94 +314,94 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                      itemCount: 12,
-                      itemBuilder: ((context, int index) {
-                        return InkWell(
-                          onTap: () {
-                            _showPriview(index, model.results![index].id!);
-                          },
-                          child: model.results?[index].backdropPath != null
-                              ? Stack(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 10),
-                                      height: 300,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                            '${Constants.baseImagePath}${model.results?[index].backdropPath}',
-                                            fit: BoxFit.cover),
-                                      ),
+                    itemCount: 12,
+                    itemBuilder: ((context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                          bloc!.add(GetVideoEvent(
+                              model.results![index].id!.toString()));
+                        },
+                        child: model.results?[index].backdropPath != null
+                            ? Stack(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    height: 300,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                          '${Constants.baseImagePath}${model.results?[index].backdropPath}',
+                                          fit: BoxFit.cover),
                                     ),
-                                    Positioned(
-                                      bottom: 0,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(15),
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          gradient: LinearGradient(
-                                            begin: const FractionalOffset(
-                                                0.0, 0.0),
-                                            end: const FractionalOffset(
-                                                0.0, 0.85),
-                                            colors: <Color>[
-                                              Colors.transparent,
-                                              colorStyle.black()
-                                            ],
-                                          ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(15),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
                                         ),
-                                        margin:
-                                            const EdgeInsets.only(bottom: 10),
-                                        height: 300,
-                                        width: 375,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                model.results![index].title!,
-                                                style: styleText.lato(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                model.results![index].overview!,
-                                                textAlign: TextAlign.justify,
-                                                maxLines: 3,
-                                                style: styleText.lato(),
-                                                softWrap: true,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            // Text(
-                                            //   'read more...',
-                                            //   style: styleText.lato(
-                                            //       fontWeight: FontWeight.bold),
-                                            // ),
+                                        gradient: LinearGradient(
+                                          begin:
+                                              const FractionalOffset(0.0, 0.0),
+                                          end:
+                                              const FractionalOffset(0.0, 0.85),
+                                          colors: <Color>[
+                                            Colors.transparent,
+                                            colorStyle.black()
                                           ],
                                         ),
                                       ),
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      height: 300,
+                                      width: 375,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              model.results![index].title!,
+                                              style: styleText.lato(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              model.results![index].overview!,
+                                              textAlign: TextAlign.justify,
+                                              maxLines: 3,
+                                              style: styleText.lato(),
+                                              softWrap: true,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                )
-                              : loadingWidget(),
-                        );
-                      })),
+                                  ),
+                                ],
+                              )
+                            : loadingWidget(),
+                      );
+                    }),
+                  ),
                 )
               ],
             ),

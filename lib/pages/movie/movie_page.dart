@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:flutter_tmdb/models/models.dart';
+import 'package:flutter_tmdb/models/movie_video_response_model.dart';
 import 'package:flutter_tmdb/widgets/widgets.dart';
 
 import '../../models/popular_movie_response_model.dart';
@@ -18,6 +19,11 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   MovieBloc? bloc;
+
+  MovieVideoResponseModel videoModel = MovieVideoResponseModel();
+  // List<String> videoId = [];
+  String videoId = '';
+  int currentIndex = 0;
   late PopularMovieResponseModel popularModel = PopularMovieResponseModel();
   late NowPlayingMovieResponseModel nowPlayingModel =
       NowPlayingMovieResponseModel();
@@ -36,6 +42,10 @@ class _MoviePageState extends State<MoviePage> {
     super.dispose();
   }
 
+  _getVideo() async {
+    bloc!.add(GetVideoEvent(popularModel.results![currentIndex].id.toString()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MovieBloc, MovieState>(
@@ -46,6 +56,18 @@ class _MoviePageState extends State<MoviePage> {
         }
         if (state is GetNowPlayingMovieSuccessState) {
           nowPlayingModel = state.model;
+        }
+        if (state is GetVideoSuccessState) {
+          // videoModel = state.model;
+          videoId = state.model.results![0].key!;
+          // debugPrint(videoId);
+          Navigator.of(context).pushNamed(Routers.detail,
+              arguments: [popularModel, videoId, currentIndex]);
+
+          // videoId.clear();
+          // for (var a = 0; a < videoModel.results!.length; a++) {
+          //   videoId.add(videoModel.results![a].key!);
+          // }
         }
         if (state is GetLatestMovieSuccessState) {}
         if (state is GetUpcomingMovieSuccessState) {}
@@ -107,8 +129,10 @@ class _MoviePageState extends State<MoviePage> {
                     itemBuilder: ((context, int index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(Routers.detail,
-                              arguments: [popularModel, index]);
+                          setState(() {
+                            currentIndex = index;
+                          });
+                          _getVideo();
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 5),

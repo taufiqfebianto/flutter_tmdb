@@ -65,7 +65,7 @@ class _PreferencePageState extends State<PreferencePage> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(25),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
