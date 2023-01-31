@@ -28,12 +28,12 @@ class Constants {
 
   // ASSET IMAGES
   static const String baseImagePath = 'https://image.tmdb.org/t/p/original';
-  static const String logoFull = 'assets/primary_full.svg';
-  static const String logoLong = 'assets/primary_long.svg';
   static const String logoShort = 'assets/primary_short.png';
   static const String altLong = 'assets/alt_long.png';
   static const String altShort = 'assets/alt_short.svg';
   static const String logo = 'assets/logo.png';
+  static const String poster = 'assets/poster.jpg';
+  static const String backdrop = 'assets/backdrop.jpg';
 
   // STRING
   static const String sysnopsis =

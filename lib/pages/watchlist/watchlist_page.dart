@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
-import 'package:flutter_tmdb/styles/colors.dart';
-import 'package:flutter_tmdb/styles/fonts.dart';
-import 'package:flutter_tmdb/widgets/widgets.dart';
 
 import '../../shared/shared.dart';
-import 'bloc/more.dart';
+import '../../styles/styles.dart';
+import '../../widgets/widgets.dart';
+import 'bloc/watchlist_bloc.dart';
 
-class MorePage extends StatefulWidget {
-  final PopularMovieResponseModel? model;
-  const MorePage({super.key, this.model});
+class WatchlistPage extends StatefulWidget {
+  const WatchlistPage({super.key});
 
   @override
-  State<MorePage> createState() => _MorePageState();
+  State<WatchlistPage> createState() => _WatchlistPageState();
 }
 
-class _MorePageState extends State<MorePage> {
-  MoreBloc? bloc;
+class _WatchlistPageState extends State<WatchlistPage> {
+  WatchlistBloc? bloc;
 
   @override
   void initState() {
+    bloc = BlocProvider.of<WatchlistBloc>(context);
     super.initState();
-    bloc = BlocProvider.of<MoreBloc>(context);
   }
 
   @override
@@ -36,7 +33,7 @@ class _MorePageState extends State<MorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MoreBloc, MoreState>(
+    return BlocConsumer<WatchlistBloc, WatchlistState>(
       listener: ((context, state) {}),
       builder: (context, state) {
         return Scaffold(
@@ -50,7 +47,7 @@ class _MorePageState extends State<MorePage> {
               ),
             ),
             title: Text(
-              'Popular Movies',
+              'Watchlist',
               style: styleText.lato(
                   fontWeight: FontWeight.bold,
                   color: colorStyle.lightBlue(),
@@ -60,7 +57,7 @@ class _MorePageState extends State<MorePage> {
               IconButton(
                 onPressed: (() {}),
                 icon: Icon(
-                  Icons.search_rounded,
+                  Icons.edit_rounded,
                   color: colorStyle.lightBlue(),
                 ),
               )
@@ -68,7 +65,7 @@ class _MorePageState extends State<MorePage> {
             backgroundColor: colorStyle.darkBlue(),
           ),
           body: Padding(
-            padding: const EdgeInsets.all( 10),
+            padding: const EdgeInsets.all(10),
             child: GridView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -79,15 +76,27 @@ class _MorePageState extends State<MorePage> {
                   crossAxisSpacing: 10,
                   childAspectRatio: 0.8,
                 ),
-                itemCount: widget.model?.results?.length,
+                itemCount: 3,
                 itemBuilder: (BuildContext context, int index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: widget.model!.results![index].posterPath != null
-                        ? Image.network(
-                            '${Constants.baseImagePath}${widget.model!.results![index].posterPath}',
-                            fit: BoxFit.fill)
-                        : loadingWidget(),
+                  return Stack(
+                    children: [
+                      Center(
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child:
+                                // widget.model!.results![index].posterPath != null
+                                //     ?
+                                Image.asset(Constants.poster, fit: BoxFit.fill)
+                            // : loadingWidget(),
+                            ),
+                      ),
+                      const Center(
+                        child: Icon(
+                          Icons.delete_rounded,
+                          size: 80,
+                        ),
+                      ),
+                    ],
                   );
                 }),
           ),

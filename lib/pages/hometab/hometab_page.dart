@@ -82,7 +82,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _scaffoldKey.currentState!.closeDrawer();
+                    Navigator.of(context).pushNamed(Routers.download);
+                  },
                   child: const ListTile(
                     leading: Icon(Icons.download_rounded),
                     title: Text('Download'),
@@ -90,7 +93,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _scaffoldKey.currentState!.closeDrawer();
+                    Navigator.of(context).pushNamed(Routers.watchlist);
+                  },
                   child: const ListTile(
                     leading: Icon(Icons.playlist_add_rounded),
                     title: Text('Watchlist'),
@@ -102,7 +108,15 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   child: const ListTile(
                     leading: Icon(Icons.timeline_outlined),
                     title: Text('Popular'),
-                    subtitle: Text('popular movie & tv series'),
+                    subtitle: Text('popular movie & series'),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Icons.video_collection_rounded),
+                    title: Text('Now playing'),
+                    subtitle: Text('on going movie & series'),
                   ),
                 ),
                 InkWell(
@@ -110,16 +124,19 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   child: const ListTile(
                     leading: Icon(Icons.av_timer_rounded),
                     title: Text('Upcoming'),
-                    subtitle: Text('upcoming movie & tv series'),
+                    subtitle: Text('upcoming movie & series'),
                   ),
                 ),
 
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _scaffoldKey.currentState!.closeDrawer();
+                    Navigator.of(context).pushNamed(Routers.genre);
+                  },
                   child: const ListTile(
                     leading: Icon(Icons.movie_rounded),
                     title: Text('Genre'),
-                    subtitle: Text('category movie & tv series'),
+                    subtitle: Text('category movie & series'),
                   ),
                 ),
                 Padding(
@@ -130,7 +147,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _scaffoldKey.currentState!.closeDrawer();
+                    Navigator.of(context).pushNamed(Routers.preferences);
+                  },
                   child: const ListTile(
                     leading: Icon(Icons.settings_rounded),
                     title: Text('Preference'),

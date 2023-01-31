@@ -89,7 +89,12 @@ class _MoviePageState extends State<MoviePage> {
                     autoplay: true,
                   ),
                 ),
-                titleButton(onTap: () {}, title: 'Popular'),
+                titleButton(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(Routers.more, arguments: popularModel);
+                    },
+                    title: 'Popular'),
                 SizedBox(
                   height: 220,
                   child: ListView.builder(
@@ -101,7 +106,10 @@ class _MoviePageState extends State<MoviePage> {
                     itemCount: 5,
                     itemBuilder: ((context, int index) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Routers.detail,
+                              arguments: [popularModel, index]);
+                        },
                         child: Container(
                           margin: const EdgeInsets.only(right: 5),
                           child: ClipRRect(
@@ -118,12 +126,7 @@ class _MoviePageState extends State<MoviePage> {
                     }),
                   ),
                 ),
-                titleButton(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(Routers.more, arguments: popularModel);
-                    },
-                    title: 'Now Playing'),
+                titleButton(onTap: () {}, title: 'Now Playing'),
                 SizedBox(
                   height: 220,
                   child: ListView.builder(
@@ -134,10 +137,7 @@ class _MoviePageState extends State<MoviePage> {
                     itemCount: 5,
                     itemBuilder: ((context, int index) {
                       return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(Routers.detail,
-                              arguments: [nowPlayingModel, index]);
-                        },
+                        onTap: () {},
                         child: Container(
                           margin: const EdgeInsets.only(right: 5),
                           child: ClipRRect(

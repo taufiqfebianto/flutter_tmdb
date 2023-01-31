@@ -5,7 +5,6 @@ import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
 import 'package:flutter_tmdb/shared/shared.dart';
 import 'package:flutter_tmdb/styles/colors.dart';
 import 'package:flutter_tmdb/styles/fonts.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -156,9 +155,7 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () {
-                              
-                              },
+                              onPressed: () {},
                               icon: Icon(
                                 Icons.add_rounded,
                                 color: colorStyle.lightBlue(),
@@ -198,7 +195,10 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(Routers.detail,
+                                    arguments: [model, index]);
+                              },
                               icon: Icon(
                                 Icons.info_rounded,
                                 color: colorStyle.lightBlue(),

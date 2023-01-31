@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tmdb/models/popular_movie_response_model.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -10,7 +11,7 @@ import '../../widgets/widgets.dart';
 import 'bloc/detail.dart';
 
 class DetailPage extends StatefulWidget {
-  final NowPlayingMovieResponseModel? model;
+  final PopularMovieResponseModel? model;
   final int? index;
   const DetailPage({super.key, this.model, this.index});
 
@@ -50,7 +51,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   _onBack() {
-    Navigator.of(context).pop();
+    Navigator.of(context).popUntil(ModalRoute.withName(Routers.home));
   }
 
   @override
